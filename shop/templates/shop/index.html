@@ -7,9 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"
-        crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+
     <link rel="stylesheet" href="{% static 'shop/style.css' %}">
     <title>Document</title>
 </head>
@@ -48,7 +48,7 @@
                         $ {{ product.price }}
                     </div>
                     <a href="/{{ product.id }}" class="btn btn-warning">View</a>
-                    <a  class="btn btn-warning">Add to cart</a>
+                    <button id="{{product.id}}" class="btn atc btn-warning">Add to cart</button>
 
                 </div>
             </div>
@@ -67,14 +67,14 @@
                     {%endif%}
 
 
-                     <li class="page-item active">
+                    <li class="page-item active">
                         <a class="page-link" href="?page={{ product_objects.number }}">
                             Current
                         </a>
                     </li>
 
                     {% if product_objects.has_next %}
-                     <li class="page-item">
+                    <li class="page-item">
                         <a class="page-link" href="?page={{ product_objects.next_page_number }}">
                             Next
                         </a>
@@ -86,5 +86,32 @@
             </div>
         </div>
 </body>
+<script type="text/javascript">
+    console.log('This is working');
+
+    if(localStorage.getItem('cart')==null){
+        var cart = {};
+    }
+    else{
+        cart = JSON.parse(localStorage.getItem('cart'));
+    }
+
+    $(document).on('click', '.atc', function(){
+        console.log("The add to cart button is clicked");
+        var item_id = this.id.toString();
+        console.log(item_id);
+
+        if(cart[item_id] != undefined){
+            cart[item_id] = cart[item_id] + 1
+        }
+        else{
+            cart[item_id] = 1
+        }
+        console.log(cart);
+        localStorage.setItem('cart', JSON.stringify(cart));
+    });
+
+</script>
+
 
 </html>
